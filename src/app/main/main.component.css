@@ -1,0 +1,6 @@
+header {
+  min-height: 110px;
+  border-bottom: 1px solid lightgray;
+  box-shadow: 3px 1px 10px #c5bdbd;
+  background-color: white;
+}
