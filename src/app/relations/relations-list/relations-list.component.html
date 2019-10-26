@@ -1,0 +1,9 @@
+<div class="list-group">
+  <a
+    style="cursor: pointer;"
+    class="list-group-item list-group-item-action clearfix"
+    *ngFor="let relation of relations; let i = index"
+    (click)="onRelationClick(i)">
+    {{ relation.code }} - {{ relation.name }}
+  </a>
+</div>

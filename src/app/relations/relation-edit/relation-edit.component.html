@@ -1,0 +1,57 @@
+<form (ngSubmit)="onSubmit()" #f="ngForm">
+
+  <div class="form-row">
+    <div class="col-md-3">
+      <div class="form-group row">
+        <label for="code" class="col-md-3 col-form-label">الرمز :</label>
+        <div class="col-md-8">
+            <input type="text"
+            id="code"
+            name="code"
+            class="form-control"
+            [ngClass]="{'is-invalid':!code.valid && code.touched}"
+            ngModel
+            required
+            placeholder="رمز العلاقة"
+            #code="ngModel">
+        </div>
+      </div>
+    </div>
+    <div class="col-md-5">
+      <div class="form-group row">
+        <label for="name" class="col-md-3 col-form-label">العلاقة :</label>
+        <div class="col-md-8">
+            <input type="text"
+            id="name"
+            name="name"
+            class="form-control"
+            [ngClass]="{'is-invalid':!name.valid && name.touched}"
+            ngModel
+            required
+            placeholder="نوع العلاقة"
+            #name="ngModel"
+            #nameInput>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+        <button type="submit"
+                class="btn btn-success"
+                [disabled]="!f.valid"
+                style="min-width: 100px">
+            <i class="fas fa-pen"></i>   {{ editMode ? 'تعديل' : 'حفظ' }}
+        </button>
+        <button
+            class="btn btn-danger"
+            type="button"
+            (click)="onDelete()"
+            style="margin-right: 10px;min-width: 100px"
+            *ngIf="editMode"><i class="fas fa-trash"></i> حذف </button>
+          <button
+            class="btn btn-warning"
+            type="button"
+            (click)="onClear()"
+            style="margin-right: 10px;min-width: 100px"><i class="fas fa-ban"></i> إلغاء الأمر </button>
+    </div>
+  </div>
+</form>
