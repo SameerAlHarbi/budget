@@ -14,6 +14,10 @@
             required
             placeholder="رمز العلاقة"
             #code="ngModel">
+            <small class="invalid-feedback"
+                  *ngIf="!code.valid && code.touched">
+                    الرجاء ادخال رمز العلاقة
+            </small>
         </div>
       </div>
     </div>
@@ -31,12 +35,16 @@
             placeholder="نوع العلاقة"
             #name="ngModel"
             #nameInput>
+            <small class="invalid-feedback"
+                  *ngIf="!name.valid && name.touched">
+                    الرجاء ادخال وصف العلاقة
+            </small>
         </div>
       </div>
     </div>
     <div class="col-md-4">
         <button type="submit"
-                class="btn btn-success"
+                class="btn btn-primary"
                 [disabled]="!f.valid"
                 style="min-width: 100px">
             <i class="fas fa-pen"></i>   {{ editMode ? 'تعديل' : 'حفظ' }}
@@ -45,7 +53,7 @@
             class="btn btn-danger"
             type="button"
             (click)="onDelete()"
-            style="margin-right: 10px;min-width: 100px"
+            style="margin-right: 10px;min-width: 100px;"
             *ngIf="editMode"><i class="fas fa-trash"></i> حذف </button>
           <button
             class="btn btn-warning"

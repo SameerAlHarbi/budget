@@ -12,6 +12,8 @@ import { BanksComponent } from './banks/banks.component';
 import { RelationsComponent } from './relations/relations.component';
 import { RelationsListComponent } from './relations/relations-list/relations-list.component';
 import { RelationEditComponent } from './relations/relation-edit/relation-edit.component';
+import { BeneficiariesComponent } from './beneficiaries/beneficiaries.component';
+import { BeneficiariesSummaryComponent } from './beneficiaries/beneficiaries-summary/beneficiaries-summary.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { RelationEditComponent } from './relations/relation-edit/relation-edit.c
     BanksComponent,
     RelationsComponent,
     RelationsListComponent,
-    RelationEditComponent
+    RelationEditComponent,
+    BeneficiariesComponent,
+    BeneficiariesSummaryComponent
   ],
   imports: [
     BrowserModule,

@@ -51,6 +51,9 @@ export class RelationEditComponent implements OnInit, OnDestroy {
   }
 
   onDelete() {
+    if (!confirm('هل أنت متأكد من حذف العلاقة ؟')) {
+      return;
+    }
     this.relationsService.deleteRelation(this.editingItem.code);
     this.onClear();
   }
