@@ -14,6 +14,7 @@ import { RelationsListComponent } from './relations/relations-list/relations-lis
 import { RelationEditComponent } from './relations/relation-edit/relation-edit.component';
 import { BeneficiariesComponent } from './beneficiaries/beneficiaries.component';
 import { BeneficiariesSummaryComponent } from './beneficiaries/beneficiaries-summary/beneficiaries-summary.component';
+import { BeneficiariesListComponent } from './beneficiaries/beneficiaries-list/beneficiaries-list.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { BeneficiariesSummaryComponent } from './beneficiaries/beneficiaries-sum
     RelationsListComponent,
     RelationEditComponent,
     BeneficiariesComponent,
-    BeneficiariesSummaryComponent
+    BeneficiariesSummaryComponent,
+    BeneficiariesListComponent
   ],
   imports: [
     BrowserModule,
