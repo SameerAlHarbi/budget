@@ -1,5 +1,11 @@
-export class BeneficiaryModel {
+export class Beneficiary {
 
-  constructor(public code: string, public name: string, public relation: string) { }
+  dept: number;
+
+  constructor(public code: string
+            , public name: string
+            , public relation: string
+            , public mobile?: string
+            , public email?: string) { }
 
 }

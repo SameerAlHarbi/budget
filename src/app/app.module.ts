@@ -15,6 +15,7 @@ import { RelationEditComponent } from './relations/relation-edit/relation-edit.c
 import { BeneficiariesComponent } from './beneficiaries/beneficiaries.component';
 import { BeneficiariesSummaryComponent } from './beneficiaries/beneficiaries-summary/beneficiaries-summary.component';
 import { BeneficiariesListComponent } from './beneficiaries/beneficiaries-list/beneficiaries-list.component';
+import { BeneficiaryEditComponent } from './beneficiaries/beneficiary-edit/beneficiary-edit.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { BeneficiariesListComponent } from './beneficiaries/beneficiaries-list/b
     RelationEditComponent,
     BeneficiariesComponent,
     BeneficiariesSummaryComponent,
-    BeneficiariesListComponent
+    BeneficiariesListComponent,
+    BeneficiaryEditComponent
   ],
   imports: [
     BrowserModule,

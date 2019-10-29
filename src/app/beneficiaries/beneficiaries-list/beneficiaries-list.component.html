@@ -1,1 +1,45 @@
-<p>beneficiaries-list works!</p>
+<div class="d-flex" style="margin-bottom: 15px">
+  <button class="btn btn-success"
+          style="margin-left: auto"
+          (click)="onNewBeneficiary()">
+          <i Class="fas fa-plus"></i>
+          أضافة مستفيد جديد</button>
+</div>
+
+
+<div class="table-responsive-sm">
+<table class="table table-hover bg-light">
+  <thead>
+    <th>#</th>
+    <th>الاسم</th>
+    <th>العلاقة</th>
+    <th>الهاتف</th>
+    <th>البريد الالكتروني</th>
+    <th>الدين</th>
+  </thead>
+  <tbody>
+    <tr *ngIf="beneficiariesList.length < 1">
+      <td colspan="6">
+        <p style="text-align: center;color: rgb(109, 101, 101);font-style: italic">
+            .... No Data ....
+        </p>
+      </td>
+    </tr>
+    <tr *ngFor="let beneficiaryItem of beneficiariesList; let i = index">
+      <td>{{ i }}</td>
+      <td>{{ beneficiaryItem.name }}</td>
+      <td>{{ beneficiaryItem.relation }}</td>
+      <td>{{ beneficiaryItem.mobile }}</td>
+      <td>{{ beneficiaryItem.email }}</td>
+      <td>{{ beneficiaryItem.dept }}</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr *ngIf="beneficiariesList.length > 0">
+      <td colspan="6">
+        لا يوجد
+      </td>
+    </tr>
+  </tfoot>
+</table>
+</div>

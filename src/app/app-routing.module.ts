@@ -4,13 +4,15 @@ import { HomeComponent } from './home/home.component';
 import { RelationsComponent } from './relations/relations.component';
 import { BeneficiariesComponent } from './beneficiaries/beneficiaries.component';
 import { BeneficiariesListComponent } from './beneficiaries/beneficiaries-list/beneficiaries-list.component';
+import { BeneficiaryEditComponent } from './beneficiaries/beneficiary-edit/beneficiary-edit.component';
 
 
 const routes: Routes = [
   {path: '', component: HomeComponent, pathMatch: 'full'},
   {path: 'relations', component: RelationsComponent},
-  {path: 'beneficiaries', component: BeneficiariesComponent, children:[
-    {path: '', component: BeneficiariesListComponent}
+  {path: 'beneficiaries', component: BeneficiariesComponent, children: [
+    {path: '', component: BeneficiariesListComponent},
+    {path: 'new', component: BeneficiaryEditComponent}
   ]}
 ];
 
