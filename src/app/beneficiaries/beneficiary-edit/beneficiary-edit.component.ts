@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Beneficiary } from '../beneficiary.model';
+import { BeneficiariesService } from '../beneficiaries.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-beneficiary-edit',
@@ -7,9 +10,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BeneficiaryEditComponent implements OnInit {
 
-  constructor() { }
+  editMode = false;
+  editingItemIndex: number;
+  editingItem: Beneficiary;
+
+  constructor(private beneficiariesService: BeneficiariesService
+    , private router: Router
+    , private route: ActivatedRoute) { }
 
   ngOnInit() {
+    
   }
 
 }
