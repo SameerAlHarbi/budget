@@ -9,7 +9,7 @@ export class BeneficiariesService {
 
   beneficiariesList: Beneficiary[] = [
     new Beneficiary('001', 'رامي', 'أخ'),
-    new Beneficiary('001', 'سامر', 'أخت')
+    new Beneficiary('002', 'سامر', 'أخت')
     ];
 
   beneficiariesListChanged = new Subject<Beneficiary[]>();

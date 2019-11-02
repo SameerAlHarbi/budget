@@ -7,13 +7,35 @@
                id="code"
                formControlName="code"
                class="form-control"
+               [class.is-invalid]="!beneficiaryCode.valid && beneficiaryCode.touched && !beneficiaryCode.pending"
                style="max-width: 250px;"
                aria-describedby="codeHelp">
-            <small id="codeHelp" class="form-text text-muted">رمز المستفيد</small>
+               <small *ngIf="!beneficiaryCode.valid && !beneficiaryCode.pending" class="invalid-feedback">
+                  <span *ngIf="beneficiaryCode.errors['required']">
+                      الرجاء ادخال رمز المستفيد
+                  </span>
+                  <span *ngIf="beneficiaryCode.errors['pattern']">
+                        رمز المستفيد غير صحيح
+                  </span>
+                  <span *ngIf="beneficiaryCode.errors['invalidCode']">
+                        رمز المستفيد غير ممكن
+                  </span>
+                  <span *ngIf="beneficiaryCode.errors['codeIsDuplicate']">
+                        رمز المستفيد مسجل مسبقاً
+                  </span>
+               </small>
+               <small class="form-text text-muted" *ngIf="beneficiaryCode.pending"
+                style="font-style: italic;">
+                جاري التحقق الرجاء الانتظار ...
+               </small>
         </div>
         <div class="form-group">
             <label for="name">الاسم</label>
-            <input type="text" id="name" class="form-control" aria-describedby="nameHelp">
+            <input type="text"
+                   id="name"
+                   formControlName="name"
+                   class="form-control"
+                   aria-describedby="nameHelp">
             <small id="nameHelp" class="form-text text-muted">اسم المستفيد</small>
         </div>
         <div class="form-group">
@@ -29,12 +51,20 @@
         </div>
         <div class="form-group">
             <label for="mobile">الهاتف</label>
-            <input type="text" id="mobile" class="form-control" aria-describedby="mobileHelp">
+            <input type="text"
+                   id="mobile"
+                   formControlName="mobile"
+                   class="form-control"
+                   aria-describedby="mobileHelp">
             <small id="mobileHelp" class="form-text text-muted">هاتف المستفيد</small>
         </div>
         <div class="form-group">
             <label for="email">البريد الالكتروني</label>
-            <input type="email" id="email" class="form-control" aria-describedby="emailHelp">
+            <input type="email"
+                   id="email"
+                   formControlName="email"
+                   class="form-control"
+                   aria-describedby="emailHelp">
             <small id="emailHelp" class="form-text text-muted">البريد الالكتروني للمستفيد</small>
         </div>
     </div>
@@ -43,5 +73,5 @@
     </div>
   </div>
 
-  <button type="submit" class="btn btn-primary">حفظ</button>
+  <button type="submit" class="btn btn-primary" [disabled]="!beneficiariesForm.valid">حفظ</button>
 </form>

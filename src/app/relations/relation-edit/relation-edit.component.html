@@ -13,6 +13,8 @@
             ngModel
             required
             placeholder="رمز العلاقة"
+            minlength="3"
+            maxlength="3"
             #code="ngModel">
             <small class="invalid-feedback"
                   *ngIf="!code.valid && code.touched">

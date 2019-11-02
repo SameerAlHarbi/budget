@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Beneficiary } from '../beneficiary.model';
 import { BeneficiariesService } from '../beneficiaries.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Relation } from 'src/app/relations/relation.model';
 import { RelationsService } from 'src/app/relations/relations.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
@@ -15,7 +15,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 export class BeneficiaryEditComponent implements OnInit {
 
   editMode = false;
-  editingItemIndex: number;
+  editingItemCode: string;
   editingItem: Beneficiary;
 
   relationsList: Relation[];
@@ -29,23 +29,75 @@ export class BeneficiaryEditComponent implements OnInit {
             , private route: ActivatedRoute) { }
 
   ngOnInit() {
+
     this.relationsList = this.relationsService.getAllRelations();
     this.relationsSubscription = this.relationsService.relationsChanged.subscribe(
       (relations: Relation[]) => {
         this.relationsList = relations;
       });
 
-    this.beneficiariesForm = new FormGroup({
-        code: new FormControl('0099', Validators.required),
-        name: new FormControl(null, Validators.required),
-        relation: new FormControl('Brother', Validators.required),
-        mobile: new FormControl(null, Validators.required),
-        email: new FormControl(null, [Validators.required, Validators.email])
+    this.route.params.subscribe(
+      (params: Params) => {
+        this.editingItemCode = params.code;
+        this.editMode = this.editingItemCode != null;
+        if (this.editMode) {
+          this.editingItem = this.beneficiariesService
+            .getBeneficiaryByCode(this.editingItemCode);
+        }
+        this.initForm();
       });
+
+  }
+
+  get beneficiaryCode() {
+    return this.beneficiariesForm.get('code');
+  }
+
+  initForm() {
+
+    if (!this.editMode) {
+      this.editingItem = new Beneficiary(null, null, null, null, null);
+    }
+
+    this.beneficiariesForm = new FormGroup({
+      code: new FormControl(this.editingItem.code, [Validators.required,
+        Validators.pattern(/^\d{3}$/), this.validCode.bind(this)], this.dublicateCode.bind(this)),
+      name: new FormControl(this.editingItem.name, Validators.required),
+      relation: new FormControl(this.editingItem.relation, Validators.required),
+      mobile: new FormControl(this.editingItem.mobile, Validators.required),
+      email: new FormControl(this.editingItem.email, [Validators.required, Validators.email])
+    });
+
+  }
+
+  validCode(control: formControl): { [s: string]: boolean} {
+    if (control.value === '000') {
+      return {'invalidCode': true};
+    }
+    return null;
+  }
+
+  dublicateCode(control: FormControl): Promise<any> | Observable<any> {
+
+    const promise = new Promise<any>((resolve, reject) => {
+      setTimeout(() => {
+        if (this.beneficiariesService.getBeneficiaryByCode(control.value)) {
+          resolve({codeIsDuplicate: true});
+        }
+        resolve(null);
+      }, 5000);
+    });
+
+    return promise;
   }
 
   onSubmit() {
     console.log(this.beneficiariesForm);
+    this.onCancel();
+  }
+
+  onCancel() {
+    this.router.navigate(['../'], {relativeTo: this.route});
   }
 
 }

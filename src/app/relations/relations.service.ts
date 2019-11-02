@@ -8,11 +8,11 @@ import { Subject } from 'rxjs';
 export class RelationsService {
 
   relations: Relation[] = [
-    new Relation('001', 'Father'),
-    new Relation('002', 'Mother'),
-    new Relation('003', 'Brother'),
-    new Relation('004', 'Sister'),
-    new Relation('005', 'Wife')
+    new Relation('001', 'أب'),
+    new Relation('002', 'أم'),
+    new Relation('003', 'أخ'),
+    new Relation('004', 'أخت'),
+    new Relation('005', 'زوجة')
   ];
 
   relationsChanged = new Subject<Relation[]>();
