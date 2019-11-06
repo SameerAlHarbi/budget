@@ -15,7 +15,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 export class BeneficiaryEditComponent implements OnInit {
 
   editMode = false;
-  editingItemCode: string;
   editingItem: Beneficiary;
 
   relationsList: Relation[];
@@ -38,19 +37,14 @@ export class BeneficiaryEditComponent implements OnInit {
 
     this.route.params.subscribe(
       (params: Params) => {
-        this.editingItemCode = params.code;
-        this.editMode = this.editingItemCode != null;
+        this.editMode = params.code != null;
         if (this.editMode) {
           this.editingItem = this.beneficiariesService
-            .getBeneficiaryByCode(this.editingItemCode);
+            .getBeneficiaryByCode(params.code);
         }
         this.initForm();
       });
 
-  }
-
-  get beneficiaryCode() {
-    return this.beneficiariesForm.get('code');
   }
 
   initForm() {
@@ -70,9 +64,13 @@ export class BeneficiaryEditComponent implements OnInit {
 
   }
 
-  validCode(control: formControl): { [s: string]: boolean} {
+  get beneficiaryCodeControl() {
+    return this.beneficiariesForm.get('code');
+  }
+
+  validCode(control: FormControl): { [s: string]: boolean} {
     if (control.value === '000') {
-      return {'invalidCode': true};
+      return { invalidCode : true};
     }
     return null;
   }

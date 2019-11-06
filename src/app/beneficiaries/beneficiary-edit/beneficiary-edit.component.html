@@ -7,24 +7,24 @@
                id="code"
                formControlName="code"
                class="form-control"
-               [class.is-invalid]="!beneficiaryCode.valid && beneficiaryCode.touched && !beneficiaryCode.pending"
+               [class.is-invalid]="!beneficiaryCode.valid && beneficiaryCodeControl.touched && !beneficiaryCodeControl.pending"
                style="max-width: 250px;"
                aria-describedby="codeHelp">
                <small *ngIf="!beneficiaryCode.valid && !beneficiaryCode.pending" class="invalid-feedback">
-                  <span *ngIf="beneficiaryCode.errors['required']">
+                  <span *ngIf="beneficiaryCodeControl.errors['required']">
                       الرجاء ادخال رمز المستفيد
                   </span>
-                  <span *ngIf="beneficiaryCode.errors['pattern']">
+                  <span *ngIf="beneficiaryCodeControl.errors['pattern']">
                         رمز المستفيد غير صحيح
                   </span>
-                  <span *ngIf="beneficiaryCode.errors['invalidCode']">
+                  <span *ngIf="beneficiaryCodeControl.errors['invalidCode']">
                         رمز المستفيد غير ممكن
                   </span>
-                  <span *ngIf="beneficiaryCode.errors['codeIsDuplicate']">
+                  <span *ngIf="beneficiaryCodeControl.errors['codeIsDuplicate']">
                         رمز المستفيد مسجل مسبقاً
                   </span>
                </small>
-               <small class="form-text text-muted" *ngIf="beneficiaryCode.pending"
+               <small class="form-text text-muted" *ngIf="beneficiaryCodeControl.pending"
                 style="font-style: italic;">
                 جاري التحقق الرجاء الانتظار ...
                </small>

@@ -9,3 +9,9 @@ export class Beneficiary {
             , public email?: string) { }
 
 }
+
+export interface BeneficiaryResolved {
+
+  beneficiary: Beneficiary;
+  error?: any;
+}

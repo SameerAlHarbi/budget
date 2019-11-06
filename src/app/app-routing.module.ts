@@ -7,6 +7,7 @@ import { BeneficiariesListComponent } from './beneficiaries/beneficiaries-list/b
 import { BeneficiaryEditComponent } from './beneficiaries/beneficiary-edit/beneficiary-edit.component';
 import { AboutComponent } from './about/about.component';
 import { BeneficiaryDetailsComponent } from './beneficiaries/beneficiary-details/beneficiary-details.component';
+import { BeneficiaryResolver } from './beneficiaries/beneficiary-resolver.service';
 
 
 const routes: Routes = [
@@ -15,7 +16,7 @@ const routes: Routes = [
   {path: 'beneficiaries', component: BeneficiariesComponent, children: [
     {path: '', component: BeneficiariesListComponent},
     {path: 'new', component: BeneficiaryEditComponent},
-    {path: ':code', component: BeneficiaryDetailsComponent},
+    {path: ':code', component: BeneficiaryDetailsComponent, resolve: { beneficiary: BeneficiaryResolver}},
     {path: ':code/edit', component: BeneficiaryEditComponent}
   ]},
   {path: 'about', component: AboutComponent}
