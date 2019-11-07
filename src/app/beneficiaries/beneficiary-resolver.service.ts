@@ -7,13 +7,12 @@ import { Observable, of } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class BeneficiaryResolver implements Resolve<Beneficiary> {
+export class BeneficiaryResolver implements Resolve<BeneficiaryResolved> {
 
   constructor(private router: Router ,private beneficiariesService: BeneficiariesService) { }
 
   resolve(route: ActivatedRouteSnapshot
         , state: RouterStateSnapshot): Observable<BeneficiaryResolved> | Promise<BeneficiaryResolved> | BeneficiaryResolved {
-
 
           const code = route.paramMap.get('code');
           if (isNaN(+code)) {
@@ -21,6 +20,11 @@ export class BeneficiaryResolver implements Resolve<Beneficiary> {
             console.error(message);
             return of({ beneficiary: null, error: message });
             }
+
+          var beneficiary = this.beneficiariesService
+            .getBeneficiaryByCode(route.params.code);
+
+            return of({ beneficiary: beneficiary });
 
             // return this.productService.getProduct(+id)
             // .pipe(
@@ -33,10 +37,5 @@ export class BeneficiaryResolver implements Resolve<Beneficiary> {
             // );
 
             // https://stackoverflow.com/questions/43898934/how-to-handle-error-in-a-resolver
-
-          this.router.navigate(['/']);
-
-          return this.beneficiariesService
-            .getBeneficiaryByCode(route.params.code);
         }
 }

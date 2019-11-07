@@ -10,6 +10,7 @@ import { Beneficiary } from '../beneficiary.model';
 export class BeneficiaryDetailsComponent implements OnInit {
 
   beneficiaryItem: Beneficiary;
+  errorMessage: string;
 
   constructor(private router: Router, private route: ActivatedRoute) { }
 
@@ -17,7 +18,9 @@ export class BeneficiaryDetailsComponent implements OnInit {
 
     this.route.data.subscribe(
       (data: Data) => {
-        this.beneficiaryItem = data.beneficiary;
+        const resolvedData = data.beneficiaryResolved;
+        this.beneficiaryItem = resolvedData.beneficiary;
+        this.errorMessage = resolvedData.error;
       });
 
   }

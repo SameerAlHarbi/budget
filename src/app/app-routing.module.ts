@@ -16,7 +16,7 @@ const routes: Routes = [
   {path: 'beneficiaries', component: BeneficiariesComponent, children: [
     {path: '', component: BeneficiariesListComponent},
     {path: 'new', component: BeneficiaryEditComponent},
-    {path: ':code', component: BeneficiaryDetailsComponent, resolve: { beneficiary: BeneficiaryResolver}},
+    {path: ':code', component: BeneficiaryDetailsComponent, resolve: { beneficiaryResolved: BeneficiaryResolver}},
     {path: ':code/edit', component: BeneficiaryEditComponent}
   ]},
   {path: 'about', component: AboutComponent}
