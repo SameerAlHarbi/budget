@@ -30,10 +30,11 @@ export class BeneficiaryEditComponent implements OnInit {
 
   ngOnInit() {
 
-    this.relationsList = this.relationsService.getAllRelations();
-    this.relationsSubscription = this.relationsService.relationsChanged.subscribe(
-      (relations: Relation[]) => {
-        this.relationsList = relations;
+    this.refreshRelations();
+
+    this.relationsSubscription = this.relationsService
+      .relationsChanged.subscribe(() => {
+        this.refreshRelations();
       });
 
     this.route.params.subscribe(
@@ -47,6 +48,14 @@ export class BeneficiaryEditComponent implements OnInit {
         this.initForm();
       });
 
+  }
+
+  refreshRelations() {
+    this.relationsService
+      .getAllRelations()
+      .subscribe((relations: Relation[]) => {
+        this.relationsList = relations;
+      });
   }
 
   initForm() {

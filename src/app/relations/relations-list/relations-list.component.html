@@ -1,10 +1,10 @@
 <p *ngIf="relations.length < 1 && !isFetching">... لا يوجد بيانات مسجلة ...</p>
-<div class="list-group" *ngIF="relations.length >= 1 && !isFetching">
+<div class="list-group" *ngIf="relations.length >= 1 && !isFetching">
   <a
     style="cursor: pointer;"
     class="list-group-item list-group-item-action clearfix"
     *ngFor="let relation of relations; let i = index"
-    (click)="onRelationClick(i)">
+    (click)="onRelationClick(relation.code)">
     {{ relation.code }} - {{ relation.name }}
   </a>
 </div>

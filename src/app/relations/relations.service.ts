@@ -3,7 +3,6 @@ import { Relation } from './relation.model';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +10,7 @@ import { platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic
 export class RelationsService {
 
   relationsChanged = new Subject<void>();
-  relationEditing = new Subject<number>();
+  relationEditing = new Subject<string>();
 
   constructor(private http: HttpClient) { }
 
@@ -27,13 +26,12 @@ export class RelationsService {
         }
         return relationsArray;
       }));
-
   }
 
   findRelationByCode(relationCode: string): Promise<Relation> {
-    
-    var promise = new Promise<Relation>((resolve,reject) => {
-      this.getAllRelations().subscribe( responseData => 
+
+    const promise = new Promise<Relation>((resolve, reject) => {
+      this.getAllRelations().subscribe( responseData =>
         resolve(responseData.find(r => r.code === relationCode)));
     });
 
@@ -43,34 +41,32 @@ export class RelationsService {
 
   findRelationByName(relationName: string): Promise<Relation> {
 
-    var promise = new Promise<Relation>((resolve,reject) => {
-      this.getAllRelations().subscribe( responseData => 
+    const promise = new Promise<Relation>((resolve, reject) => {
+      this.getAllRelations().subscribe( responseData =>
         resolve(responseData.find(r => r.name === relationName)));
     });
 
     return promise;
   }
 
-  findRelationByIndex(relationIndex: number): Promise<Relation> {
+  // findRelationByIndex(relationIndex: number): Promise<Relation> {
 
-    var promise = new Promise<Relation>((resolve,reject) => {
-      this.getAllRelations().subscribe( responseData => 
-        resolve(responseData[relationIndex]));
-    });
+  //   const promise = new Promise<Relation>((resolve, reject) => {
+  //     this.getAllRelations().subscribe( responseData =>
+  //       resolve(responseData[relationIndex]));
+  //   });
 
-    return promise;
-  }
+  //   return promise;
+  // }
 
   addNewRelation(newRelation: Relation) {
 
-    this.http.post<{code: string, name: string}>('https://budget-c0999.firebaseio.com/relations.json', newRelation)
+    this.http
+      .post<{code: string, name: string}>('https://budget-c0999.firebaseio.com/relations.json', newRelation)
       .subscribe(responseData => {
         console.log(responseData);
         this.relationsChanged.next();
       });
-
-    // this.relations.push(newRelation);
-    // this.relationsChanged.next(this.getAllRelations());
   }
 
   updateRelation(newRelation: Relation) {
@@ -88,6 +84,14 @@ export class RelationsService {
     //   this.relations.splice(index, 1);
     //   this.relationsChanged.next(this.getAllRelations());
     // }
+  }
+
+  deleteRelations() {
+    return this.http
+      .delete('https://budget-c0999.firebaseio.com/relations.json')
+      .subscribe(() => {
+        this.relationsChanged.next();
+      });
   }
 
 }

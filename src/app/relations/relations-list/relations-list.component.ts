@@ -19,19 +19,23 @@ export class RelationsListComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.refreshData();
-    
+
     this.subscribtion = this.relationsService
       .relationsChanged.subscribe(() => this.refreshData());
   }
 
   refreshData() {
+    this.isFetching = true;
     this.relationsService
       .getAllRelations()
-      .subscribe( responseData => this.relations = responseData );
+      .subscribe( responseData => {
+        this.relations = responseData;
+        this.isFetching = false;
+      });
   }
 
-  onRelationClick(index: number) {
-    this.relationsService.relationEditing.next(index);
+  onRelationClick(code: string) {
+    this.relationsService.relationEditing.next(code);
   }
 
   ngOnDestroy() {
