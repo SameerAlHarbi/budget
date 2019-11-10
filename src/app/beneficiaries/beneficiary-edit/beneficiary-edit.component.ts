@@ -15,6 +15,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 export class BeneficiaryEditComponent implements OnInit {
 
   editMode = false;
+  itemCode: string;
   editingItem: Beneficiary;
 
   relationsList: Relation[];
@@ -37,10 +38,11 @@ export class BeneficiaryEditComponent implements OnInit {
 
     this.route.params.subscribe(
       (params: Params) => {
-        this.editMode = params.code != null;
+        this.itemCode = params.code;
+        this.editMode = this.itemCode != null;
         if (this.editMode) {
           this.editingItem = this.beneficiariesService
-            .getBeneficiaryByCode(params.code);
+            .getBeneficiaryByCode(this.itemCode);
         }
         this.initForm();
       });
@@ -56,16 +58,20 @@ export class BeneficiaryEditComponent implements OnInit {
     this.beneficiariesForm = new FormGroup({
       code: new FormControl(this.editingItem.code, [Validators.required,
         Validators.pattern(/^\d{3}$/), this.validCode.bind(this)], this.dublicateCode.bind(this)),
-      name: new FormControl(this.editingItem.name, Validators.required),
+      name: new FormControl(this.editingItem.name, [Validators.required, Validators.minLength(2)], this.dublicateName.bind(this)),
       relation: new FormControl(this.editingItem.relation, Validators.required),
-      mobile: new FormControl(this.editingItem.mobile, Validators.required),
-      email: new FormControl(this.editingItem.email, [Validators.required, Validators.email])
+      mobile: new FormControl(this.editingItem.mobile, this.validMobile),
+      email: new FormControl(this.editingItem.email, Validators.email)
     });
 
   }
 
   get beneficiaryCodeControl() {
     return this.beneficiariesForm.get('code');
+  }
+
+  get beneficiaryNameControl() {
+    return this.beneficiariesForm.get('name');
   }
 
   validCode(control: FormControl): { [s: string]: boolean} {
@@ -87,6 +93,29 @@ export class BeneficiaryEditComponent implements OnInit {
     });
 
     return promise;
+  }
+
+  dublicateName(control: FormControl): Promise<any> | Observable<any> {
+    const promise = new Promise<any>((resolve, reject) => {
+        if (this.beneficiariesService.getBeneficiariesByName(control.value).length > 0) {
+          resolve({nameIsDuplicate: true});
+        }
+        resolve(null);
+    });
+
+    return promise;
+  }
+
+  validMobile(control: FormControl): {[s: string]: boolean} {
+    if (control.value
+        && (control.value.length > 0)
+        && (isNaN(control.value)
+        || !control.value.startsWith('05')
+        || control.value.length !== 10
+        || (control.value as string).indexOf('.') >= 0)) {
+      return { invalidMobile: true };
+    }
+    return null;
   }
 
   onSubmit() {

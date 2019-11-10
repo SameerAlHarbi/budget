@@ -6,7 +6,6 @@
           أضافة مستفيد جديد</button>
 </div>
 
-
 <div class="table-responsive-sm">
 <table class="table table-hover" style="background-color: #fff;">
   <thead>
@@ -16,10 +15,11 @@
     <th>الهاتف</th>
     <th>البريد الالكتروني</th>
     <th>الدين</th>
+    <td>تحكم</td>
   </thead>
   <tbody>
     <tr *ngIf="beneficiariesList.length < 1">
-      <td colspan="6">
+      <td colspan="7">
         <p style="text-align: center;color: rgb(109, 101, 101);font-style: italic">
             .... No Data ....
         </p>
@@ -32,11 +32,18 @@
       <td>{{ beneficiaryItem.mobile }}</td>
       <td>{{ beneficiaryItem.email }}</td>
       <td>{{ beneficiaryItem.dept }}</td>
+      <td>
+        <a class="btn btn-outline-info"
+          [routerLink]="beneficiaryItem.code" (click)="onEdit(beneficiaryItem.code)" title="تعديل بيانات االمستفيد" style="width: 70px;" [ngStyle]="{ 'cursor' : editCode === beneficiaryItem.code ? 'progress' : 'pointer'}">
+          <i class="fas fa-user-edit" *ngIf="editCode != beneficiaryItem.code"></i>
+          <i class="fas fa-spinner fa-spin" *ngIf="editCode === beneficiaryItem.code"></i>
+        </a>
+      </td>
     </tr>
   </tbody>
   <tfoot>
     <tr *ngIf="beneficiariesList.length > 0">
-      <td colspan="6">
+      <td colspan="7">
         لا يوجد
       </td>
     </tr>

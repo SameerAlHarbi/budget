@@ -1,5 +1,5 @@
 export class Relation {
 
-  constructor(public code: string, public name: string) { }
+  constructor(public id: string, public code: string, public name: string) { }
 
 }

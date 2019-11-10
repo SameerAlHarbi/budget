@@ -13,6 +13,7 @@ export class BeneficiariesListComponent implements OnInit, OnDestroy {
 
   beneficiariesList: Beneficiary[];
   subscribtion: Subscription;
+  editCode = '0';
 
   constructor(private beneficiariesService: BeneficiariesService,
               private router: Router, private route: ActivatedRoute) { }
@@ -32,6 +33,10 @@ export class BeneficiariesListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscribtion.unsubscribe();
+  }
+
+  onEdit(code: string) {
+    this.editCode = code;
   }
 
 }

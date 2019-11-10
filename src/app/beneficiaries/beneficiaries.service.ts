@@ -24,6 +24,17 @@ export class BeneficiariesService {
     return this.beneficiariesList.find(b => b.code === code);
   }
 
+  getBeneficiaryByCodeAsync(code: string): Promise<Beneficiary> {
+
+    const promise = new Promise<Beneficiary>((resolve, reject) => {
+      setTimeout(() => {
+        resolve(this.beneficiariesList.find(b => b.code === code));
+      }, 3000);
+    });
+
+    return promise;
+  }
+
   getBeneficiaryByIndex(index: number) {
     return this.beneficiariesList[index];
   }

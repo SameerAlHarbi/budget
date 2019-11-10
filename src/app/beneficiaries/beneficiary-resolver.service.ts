@@ -21,10 +21,14 @@ export class BeneficiaryResolver implements Resolve<BeneficiaryResolved> {
             return of({ beneficiary: null, error: message });
             }
 
-          var beneficiary = this.beneficiariesService
-            .getBeneficiaryByCode(route.params.code);
 
-            return of({ beneficiary: beneficiary });
+          const brn =  this.beneficiariesService
+            .getBeneficiaryByCodeAsync(route.params.code)
+            .then((beneficiary: Beneficiary) => {
+              return { beneficiary };
+            });
+
+          return brn;
 
             // return this.productService.getProduct(+id)
             // .pipe(

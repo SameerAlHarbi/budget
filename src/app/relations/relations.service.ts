@@ -1,27 +1,32 @@
 import { Injectable } from '@angular/core';
 import { Relation } from './relation.model';
 import { Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RelationsService {
 
-  relations: Relation[] = [
-    new Relation('001', 'أب'),
-    new Relation('002', 'أم'),
-    new Relation('003', 'أخ'),
-    new Relation('004', 'أخت'),
-    new Relation('005', 'زوجة')
-  ];
-
   relationsChanged = new Subject<Relation[]>();
   relationEditing = new Subject<number>();
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   getAllRelations() {
-    return this.relations.slice();
+
+    return this.http.get<{[key: string]: Relation}>('https://budget-c0999.firebaseio.com/relations.json')
+      .pipe(map(responseData => {
+        const relationsArray: Relation[] = [];
+        for (const key in responseData) {
+          if (responseData.hasOwnProperty(key)) {
+            relationsArray.push({ ...responseData[key], id: key});
+          }
+        }
+        return relationsArray;
+      }));
+
   }
 
   findRelationByCode(relationCode: string) {
@@ -37,6 +42,12 @@ export class RelationsService {
   }
 
   addNewRelation(newRelation: Relation) {
+
+    this.http.post<{code: string, name: string}>('https://budget-c0999.firebaseio.com/relations.json', newRelation)
+      .subscribe(responseData => {
+        console.log(responseData);
+      });
+
     this.relations.push(newRelation);
     this.relationsChanged.next(this.getAllRelations());
   }
