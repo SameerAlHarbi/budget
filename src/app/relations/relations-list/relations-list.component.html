@@ -1,4 +1,5 @@
-<div class="list-group">
+<p *ngIf="relations.length < 1 && !isFetching">... لا يوجد بيانات مسجلة ...</p>
+<div class="list-group" *ngIF="relations.length >= 1 && !isFetching">
   <a
     style="cursor: pointer;"
     class="list-group-item list-group-item-action clearfix"
@@ -7,3 +8,4 @@
     {{ relation.code }} - {{ relation.name }}
   </a>
 </div>
+<p *ngIf="isFetching">الرجاء الاتنظار جاري تجميل البيانات ...</p>

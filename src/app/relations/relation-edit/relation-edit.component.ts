@@ -23,24 +23,24 @@ export class RelationEditComponent implements OnInit, OnDestroy {
   constructor(private relationsService: RelationsService) { }
 
   ngOnInit() {
-    this.subscribtion = this.relationsService
-      .relationEditing.subscribe(
-        (itemIndex: number) => {
-          this.editMode = true;
-          this.editingItemIndex = itemIndex;
-          this.editingItem = this.relationsService
-            .findRelationByIndex(this.editingItemIndex);
-          this.form.setValue({
-              code: this.editingItem.code ,
-              name: this.editingItem.name
-            });
-          this.nameInput.nativeElement.focus();
-        });
+    // this.subscribtion = this.relationsService
+    //   .relationEditing.subscribe(
+    //     (itemIndex: number) => {
+    //       this.editMode = true;
+    //       this.editingItemIndex = itemIndex;
+    //       this.editingItem = this.relationsService
+    //         .findRelationByIndex(this.editingItemIndex);
+    //       this.form.setValue({
+    //           code: this.editingItem.code ,
+    //           name: this.editingItem.name
+    //         });
+    //       this.nameInput.nativeElement.focus();
+    //     });
   }
 
   onSubmit() {
     const value = this.form.value;
-    const newRelation = new Relation(value.code, value.name);
+    const newRelation = new Relation('0',value.code, value.name);
     if (this.editMode) {
       this.relationsService.updateRelation(newRelation);
     } else {

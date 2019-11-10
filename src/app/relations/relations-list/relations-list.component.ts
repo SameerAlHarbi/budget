@@ -10,17 +10,24 @@ import { Subscription } from 'rxjs';
 })
 export class RelationsListComponent implements OnInit, OnDestroy {
 
-  relations: Relation[];
+  relations: Relation[] = [];
   subscribtion: Subscription;
+  isFetching = false;
 
   constructor(private relationsService: RelationsService) { }
 
   ngOnInit() {
-    this.relations = this.relationsService.getAllRelations();
-    this.subscribtion = this.relationsService.relationsChanged.subscribe(
-      (rlationsList: Relation[]) => {
-        this.relations = rlationsList;
-      });
+
+    this.refreshData();
+    
+    this.subscribtion = this.relationsService
+      .relationsChanged.subscribe(() => this.refreshData());
+  }
+
+  refreshData() {
+    this.relationsService
+      .getAllRelations()
+      .subscribe( responseData => this.relations = responseData );
   }
 
   onRelationClick(index: number) {
