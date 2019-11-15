@@ -3,6 +3,7 @@ import { Relation } from './relation.model';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { Timeouts } from 'selenium-webdriver';
 
 @Injectable({
   providedIn: 'root'
@@ -49,16 +50,6 @@ export class RelationsService {
     return promise;
   }
 
-  // findRelationByIndex(relationIndex: number): Promise<Relation> {
-
-  //   const promise = new Promise<Relation>((resolve, reject) => {
-  //     this.getAllRelations().subscribe( responseData =>
-  //       resolve(responseData[relationIndex]));
-  //   });
-
-  //   return promise;
-  // }
-
   addNewRelation(newRelation: Relation) {
 
     this.http
@@ -67,6 +58,7 @@ export class RelationsService {
         console.log(responseData);
         this.relationsChanged.next();
       });
+
   }
 
   updateRelation(newRelation: Relation) {
@@ -86,7 +78,7 @@ export class RelationsService {
     // }
   }
 
-  deleteRelations() {
+  deleteAllRelations() {
     return this.http
       .delete('https://budget-c0999.firebaseio.com/relations.json')
       .subscribe(() => {

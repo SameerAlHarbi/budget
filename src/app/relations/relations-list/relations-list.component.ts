@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Relation } from '../relation.model';
 import { RelationsService } from '../relations.service';
 import { Subscription } from 'rxjs';
+import { timeout } from 'q';
 
 @Component({
   selector: 'app-relations-list',
@@ -25,6 +26,7 @@ export class RelationsListComponent implements OnInit, OnDestroy {
   }
 
   refreshData() {
+    
     this.isFetching = true;
     this.relationsService
       .getAllRelations()
@@ -32,6 +34,7 @@ export class RelationsListComponent implements OnInit, OnDestroy {
         this.relations = responseData;
         this.isFetching = false;
       });
+
   }
 
   onRelationClick(code: string) {
