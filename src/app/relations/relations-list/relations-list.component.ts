@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Relation } from '../relation.model';
 import { RelationsService } from '../relations.service';
 import { Subscription } from 'rxjs';
-import { timeout } from 'q';
 
 @Component({
   selector: 'app-relations-list',
@@ -14,6 +13,7 @@ export class RelationsListComponent implements OnInit, OnDestroy {
   relations: Relation[] = [];
   subscribtion: Subscription;
   isFetching = false;
+  error: string;
 
   constructor(private relationsService: RelationsService) { }
 
@@ -26,13 +26,16 @@ export class RelationsListComponent implements OnInit, OnDestroy {
   }
 
   refreshData() {
-    
+
     this.isFetching = true;
     this.relationsService
       .getAllRelations()
       .subscribe( responseData => {
         this.relations = responseData;
         this.isFetching = false;
+      }, error => {
+        this.error=error.message;
+        console.log(error);
       });
 
   }

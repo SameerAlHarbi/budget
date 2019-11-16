@@ -8,4 +8,8 @@
     {{ relation.code }} - {{ relation.name }}
   </a>
 </div>
-<p *ngIf="isFetching">الرجاء الاتنظار جاري تجميل البيانات ...</p>
+<p *ngIf="isFetching && !error">الرجاء الاتنظار جاري تجميل البيانات ...</p>
+<div class="alert alert-danger" *ngIf="error">
+  <h1>خطأ في النظام</h1>
+  <p>{{ error }}</p>
+</div>
