@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,6 +19,8 @@ import { BeneficiariesListComponent } from './beneficiaries/beneficiaries-list/b
 import { BeneficiaryEditComponent } from './beneficiaries/beneficiary-edit/beneficiary-edit.component';
 import { AboutComponent } from './about/about.component';
 import { BeneficiaryDetailsComponent } from './beneficiaries/beneficiary-details/beneficiary-details.component';
+import { AuthInterceptorService } from './shared/auth-interceptor.service';
+import { LoggingInterceptorService } from './shared/logging-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,18 @@ import { BeneficiaryDetailsComponent } from './beneficiaries/beneficiary-details
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {
+        provide: HTTP_INTERCEPTORS
+      , useClass: AuthInterceptorService
+      , multi: true
+    },
+    {
+        provide: HTTP_INTERCEPTORS
+      , useClass: LoggingInterceptorService
+      , multi: true
+    }
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

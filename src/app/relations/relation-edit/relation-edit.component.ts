@@ -19,6 +19,9 @@ export class RelationEditComponent implements OnInit, OnDestroy {
   editingItem: Relation;
 
   subscribtion: Subscription;
+  errorSub: Subscription;
+
+  error: string;
 
   constructor(private relationsService: RelationsService) { }
 
@@ -39,6 +42,11 @@ export class RelationEditComponent implements OnInit, OnDestroy {
               this.nameInput.nativeElement.focus();
             });
         });
+
+    this.errorSub = this.relationsService
+          .error.subscribe(errorMessage => {
+            this.error = errorMessage;
+          });
       }
 
   onSubmit() {
@@ -68,6 +76,7 @@ export class RelationEditComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscribtion.unsubscribe();
+    this.errorSub.unsubscribe();
   }
 
 }

@@ -34,7 +34,8 @@ export class RelationsListComponent implements OnInit, OnDestroy {
         this.relations = responseData;
         this.isFetching = false;
       }, error => {
-        this.error=error.message;
+        this.isFetching = false;
+        this.error = error.message;
         console.log(error);
       });
 

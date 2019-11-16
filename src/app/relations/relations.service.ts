@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Relation } from './relation.model';
-import { Subject } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { Subject, throwError } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpParams, HttpEventType } from '@angular/common/http';
+import { map, catchError, tap } from 'rxjs/operators';
 import { Timeouts } from 'selenium-webdriver';
 
 @Injectable({
@@ -13,11 +13,20 @@ export class RelationsService {
   relationsChanged = new Subject<void>();
   relationEditing = new Subject<string>();
 
+  error = new Subject<string>();
+
   constructor(private http: HttpClient) { }
 
   getAllRelations() {
 
-    return this.http.get<{[key: string]: Relation}>('https://budget-c0999.firebaseio.com/relations.json')
+    let searchParams = new HttpParams();
+    searchParams = searchParams.append('print', 'pretty');
+    searchParams = searchParams.append('custome', 'key');
+    return this.http
+      .get<{[key: string]: Relation}>('https://budget-c0999.firebaseio.com/relations.json'
+            , { headers: new HttpHeaders({'Custom-Header': 'hello'})
+              // , params: new HttpParams().set('print', 'pretty')
+              , params: searchParams })
       .pipe(map(responseData => {
         const relationsArray: Relation[] = [];
         for (const key in responseData) {
@@ -26,6 +35,10 @@ export class RelationsService {
           }
         }
         return relationsArray;
+      }), catchError(errorRes => {
+        // log error to somewere
+        console.log(errorRes);
+        return throwError(errorRes);
       }));
   }
 
@@ -53,10 +66,13 @@ export class RelationsService {
   addNewRelation(newRelation: Relation) {
 
     this.http
-      .post<{code: string, name: string}>('https://budget-c0999.firebaseio.com/relations.json', newRelation)
+      .post<{code: string, name: string}>('https://budget-c0999.firebaseio.com/relations.json'
+        , newRelation, {observe : 'response'})
       .subscribe(responseData => {
-        console.log(responseData);
+        console.log(responseData.body);
         this.relationsChanged.next();
+      }, error => {
+        this.error.next(error.message);
       });
 
   }
@@ -80,7 +96,16 @@ export class RelationsService {
 
   deleteAllRelations() {
     return this.http
-      .delete('https://budget-c0999.firebaseio.com/relations.json')
+      .delete('https://budget-c0999.firebaseio.com/relations.json'
+        , {observe: 'events', responseType: 'json'})
+      .pipe(tap(event => {
+        console.log(event);
+        if (event.type === HttpEventType.Sent) {
+          // ...
+        } else if (event.type === HttpEventType.Response) {
+          console.log(event.body);
+        }
+      }))
       .subscribe(() => {
         this.relationsChanged.next();
       });
