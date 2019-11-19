@@ -8,6 +8,7 @@ import { BeneficiaryEditComponent } from './beneficiaries/beneficiary-edit/benef
 import { AboutComponent } from './about/about.component';
 import { BeneficiaryDetailsComponent } from './beneficiaries/beneficiary-details/beneficiary-details.component';
 import { BeneficiaryResolver } from './beneficiaries/beneficiary-resolver.service';
+import { ErrorPageComponent } from './error-page/error-page.component';
 
 
 const routes: Routes = [
@@ -19,7 +20,10 @@ const routes: Routes = [
     {path: ':code', component: BeneficiaryDetailsComponent, resolve: { beneficiaryResolved: BeneficiaryResolver}},
     {path: ':code/edit', component: BeneficiaryEditComponent}
   ]},
-  {path: 'about', component: AboutComponent}
+  {path: 'about', component: AboutComponent},
+  {path: 'not-found', component: ErrorPageComponent
+      , data : { errorType: 'notfound', message: 'Page not found'}}
+  , {path: '**', redirectTo: '/not-found'}
 ];
 
 @NgModule({

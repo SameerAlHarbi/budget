@@ -21,6 +21,7 @@ import { AboutComponent } from './about/about.component';
 import { BeneficiaryDetailsComponent } from './beneficiaries/beneficiary-details/beneficiary-details.component';
 import { AuthInterceptorService } from './shared/auth-interceptor.service';
 import { LoggingInterceptorService } from './shared/logging-interceptor.service';
+import { ErrorPageComponent } from './error-page/error-page.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { LoggingInterceptorService } from './shared/logging-interceptor.service'
     BeneficiariesListComponent,
     BeneficiaryEditComponent,
     AboutComponent,
-    BeneficiaryDetailsComponent
+    BeneficiaryDetailsComponent,
+    ErrorPageComponent
   ],
   imports: [
     BrowserModule,

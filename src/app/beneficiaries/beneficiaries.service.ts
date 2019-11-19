@@ -7,14 +7,21 @@ import { Subject } from 'rxjs';
 })
 export class BeneficiariesService {
 
-  beneficiariesList: Beneficiary[] = [
-    new Beneficiary('001', 'رامي', 'أخ'),
-    new Beneficiary('002', 'سامر', 'أخت')
-    ];
+  // beneficiariesList: Beneficiary[] = [
+  //   new Beneficiary('001', 'رامي', 'أخ'),
+  //   new Beneficiary('002', 'سامر', 'أخت')
+  //   ];
+
+  beneficiariesList: Beneficiary[] = [];
 
   beneficiariesListChanged = new Subject<Beneficiary[]>();
 
   constructor() { }
+
+  setBeneficiariesData(beneficiariesData: Beneficiary[]) {
+    this.beneficiariesList = beneficiariesData;
+    this.beneficiariesListChanged.next(this.beneficiariesList.slice());
+  }
 
   getAllBeneficiaries() {
     return this.beneficiariesList.slice();
