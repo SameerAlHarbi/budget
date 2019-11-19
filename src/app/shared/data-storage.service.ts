@@ -5,7 +5,7 @@ import { Beneficiary } from '../beneficiaries/beneficiary.model';
 import { map, take, tap } from 'rxjs/operators';
 
 @Injectable({
-    providedIn: "root"
+    providedIn: 'root'
 })
 export class DataStorageService {
 
@@ -16,7 +16,7 @@ export class DataStorageService {
         this.http.put("https://budget-c0999.firebaseio.com/beneficiaries.json",beneficiaries)
             .subscribe(response => {
                 console.log(response);
-            },error => {
+            }, error => {
                 console.log(error.message);
             });
     }
