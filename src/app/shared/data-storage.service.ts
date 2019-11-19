@@ -9,11 +9,11 @@ import { map, take, tap } from 'rxjs/operators';
 })
 export class DataStorageService {
 
-    constructor(private http: HttpClient,private beneficiariesService: BeneficiariesService) { }
+    constructor(private http: HttpClient, private beneficiariesService: BeneficiariesService) { }
 
     storeBeneficiaries() {
         const beneficiaries = this.beneficiariesService.getAllBeneficiaries();
-        this.http.put("https://budget-c0999.firebaseio.com/beneficiaries.json",beneficiaries)
+        this.http.put('https://budget-c0999.firebaseio.com/beneficiaries.json', beneficiaries)
             .subscribe(response => {
                 console.log(response);
             }, error => {
@@ -22,7 +22,7 @@ export class DataStorageService {
     }
 
     fetchBeneficiaries() {
-        return this.http.get<Beneficiary[]>("https://budget-c0999.firebaseio.com/beneficiaries.json")
+        return this.http.get<Beneficiary[]>('https://budget-c0999.firebaseio.com/beneficiaries.json')
         .pipe(map(responseData => {
             return responseData.map(beneficiary => {
                 // return {...beneficiary, accounts: beneficiary.accounst ? beneficiary.account : []}
