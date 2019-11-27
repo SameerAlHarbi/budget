@@ -1,4 +1,13 @@
-<p *ngIf="relations.length < 1 && !isFetching">... لا يوجد بيانات مسجلة ...</p>
+<p *ngIf="relations.length < 1 && !isFetching && !error">... لا يوجد بيانات مسجلة ...</p>
+<p *ngIf="isFetching && !error">الرجاء الاتنظار جاري تحميل البيانات ...</p>
+<div *ngIf="error" class="alert alert-danger">
+  <h1>خطأ في النظام</h1>
+  <p>{{ error }}</p>
+</div>
+
+<button *ngIf="relations.length > 0 && !isFetching" class="btn btn-warning" (click)="onClearAll()">Clear All Relations</button>
+<br>
+<br>
 <div class="list-group" *ngIf="relations.length >= 1 && !isFetching">
   <a
     style="cursor: pointer;"
@@ -7,9 +16,4 @@
     (click)="onRelationClick(relation.code)">
     {{ relation.code }} - {{ relation.name }}
   </a>
-</div>
-<p *ngIf="isFetching && !error">الرجاء الاتنظار جاري تجميل البيانات ...</p>
-<div class="alert alert-danger" *ngIf="error">
-  <h1>خطأ في النظام</h1>
-  <p>{{ error }}</p>
 </div>

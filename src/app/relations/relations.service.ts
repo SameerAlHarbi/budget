@@ -3,7 +3,7 @@ import { Relation } from './relation.model';
 import { Subject, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams, HttpEventType } from '@angular/common/http';
 import { map, catchError, tap } from 'rxjs/operators';
-import { Timeouts } from 'selenium-webdriver';
+
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +22,7 @@ export class RelationsService {
     let searchParams = new HttpParams();
     searchParams = searchParams.append('print', 'pretty');
     searchParams = searchParams.append('custome', 'key');
+
     return this.http
       .get<{[key: string]: Relation}>('https://budget-c0999.firebaseio.com/relations.json'
             , { headers: new HttpHeaders({'Custom-Header': 'hello'})
@@ -45,19 +46,49 @@ export class RelationsService {
   findRelationByCode(relationCode: string): Promise<Relation> {
 
     const promise = new Promise<Relation>((resolve, reject) => {
-      this.getAllRelations().subscribe( responseData =>
-        resolve(responseData.find(r => r.code === relationCode)));
+
+      this.getAllRelations().subscribe(responseData => {
+
+        if (!responseData) {
+          reject(new Error('Not Found'));
+        }
+
+        const relationItem = responseData.find(r => r.code === relationCode);
+
+        if (relationItem) {
+          resolve(relationItem);
+        } else {
+          reject(new Error('Not Found'));
+        }
+      }, errorRes => {
+        reject(new Error(errorRes.message));
+      });
     });
 
     return promise;
-  }
 
+    }
 
   findRelationByName(relationName: string): Promise<Relation> {
 
     const promise = new Promise<Relation>((resolve, reject) => {
-      this.getAllRelations().subscribe( responseData =>
-        resolve(responseData.find(r => r.name === relationName)));
+
+      this.getAllRelations().subscribe(responseData => {
+
+        if (!responseData) {
+          reject(new Error('Not Found'));
+        }
+
+        const relationItem = responseData.find(r => r.code === relationName);
+
+        if (relationItem) {
+          resolve(relationItem);
+        } else {
+          reject(new Error('Not Found'));
+        }
+      }, errorRes => {
+        reject(new Error(errorRes.message));
+      });
     });
 
     return promise;
@@ -67,7 +98,7 @@ export class RelationsService {
 
     this.http
       .post<{code: string, name: string}>('https://budget-c0999.firebaseio.com/relations.json'
-        , newRelation, {observe : 'response'})
+        , {code: newRelation.code, name: newRelation.name}, {observe : 'response'})
       .subscribe(responseData => {
         console.log(responseData.body);
         this.relationsChanged.next();
@@ -78,14 +109,42 @@ export class RelationsService {
   }
 
   updateRelation(newRelation: Relation) {
-    // const currentRelation = this.findRelationByCode(newRelation.code);
-    // if (currentRelation) {
-    //   currentRelation.name = newRelation.name;
-    //   this.relationsChanged.next(this.getAllRelations());
-    // }
+
+    this.findRelationByCode(newRelation.code).then(currentRelation => {
+
+      if (!currentRelation) {
+        return;
+      }
+
+      currentRelation.name = newRelation.name;
+      currentRelation.code = newRelation.code;
+
+      this.http.patch<{code: string, name: string}>('https://budget-c0999.firebaseio.com/relations/' + currentRelation.id + '.json',
+        {code: currentRelation.code, name: currentRelation.name}, {observe: 'body'})
+        .subscribe(responseBody => {
+          console.log(responseBody);
+          this.relationsChanged.next();
+        }, error => {
+          this.error.next(error.message);
+        });
+
+    }).catch((reason: Error) => {
+
+      console.log(reason.message);
+      return ;
+    });
   }
 
-  deleteRelation(relationCode: string) {
+  async deleteRelation(relationCode: string) {
+
+    try {
+
+      const currentRelation = await this.findRelationByCode(relationCode);
+
+    } catch (e) {
+      console.log(e);
+      return;
+    }
     // const currentRelation = this.findRelationByCode(relationCode);
     // if (currentRelation) {
     //   const index = this.relations.indexOf(currentRelation);

@@ -34,15 +34,20 @@ export class RelationsListComponent implements OnInit, OnDestroy {
         this.relations = responseData;
         this.isFetching = false;
       }, error => {
-        this.isFetching = false;
         this.error = error.message;
-        console.log(error);
+        this.isFetching = false;
       });
 
   }
 
   onRelationClick(code: string) {
     this.relationsService.relationEditing.next(code);
+  }
+
+  onClearAll() {
+    if (confirm('هل انت متأكد من الحذف ؟')) {
+      this.relationsService.deleteAllRelations();
+    }
   }
 
   ngOnDestroy() {
